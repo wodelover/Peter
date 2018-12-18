@@ -25,18 +25,28 @@ Item {
     id: tcpClientPage
     property int rxCnt: 0
     property int txCnt: 0
-
+    property string newData: ""
     Connections{
         target: TcpClientCom
         onHasNewDataFromServer:{
-            console.log("asd")
-            var data = TcpClientCom.getDataFromBuffer()
-            rxCnt = data.lenth
+            newData = TcpClientCom.getDataFromBuffer()
+            rxCnt  += newData.length
             var time = new Date()
-            recvTextArea.addItem(iptext,ipport,time.toString(),data)
+            recvTextArea.insertItem(iptext.text,ipport.text,time.toLocaleTimeString(),newData)
         }
     }
 
+    function sendDataToServer(){
+        var senddata = sendTextArea.text
+        if(enterNextColum.checked){
+            senddata += "\r\n"
+        }
+        var len  = senddata.length
+        if(len){
+            TcpClientCom.sendDataToServer(senddata)
+            txCnt += len
+        }
+    }
 
     Item{//中间接收数据区域
         id: recvArea
@@ -60,6 +70,7 @@ Item {
         height: iptext.height
         Frame{
             x: parent.width * 0.01
+            y: 2
             width: parent.width * 0.98
             height: parent.height
             TextField{
@@ -121,6 +132,21 @@ Item {
                     id: sendDurationTimeCheck
                     x: sendTextTag.width + sendDurationTime.width
                     anchors.verticalCenter: sendTextTag.verticalCenter
+                    onCheckedChanged: {
+                        if(checked)
+                        {
+                            timer.start()
+                        }else{
+                            timer.stop()
+                        }
+                    }
+                    Timer{
+                        id: timer
+                        running: false
+                        repeat: true
+                        interval: parseInt(sendDurationTime.text)
+                        onTriggered: sendDataToServer()
+                    }
                 }
                 CheckBox{
                     id: enterNextColum
@@ -139,14 +165,29 @@ Item {
                 width: parent.width
                 height: rX.height
                 y: sendDurationTime.height
+
                 Text {
                     id: rX
                     text: qsTr("Rx: ") + rxCnt
                 }
                 Text {
                     id: tX
-                    x: parent.width / 2
+                    anchors.horizontalCenter:  parent.horizontalCenter
+                    anchors.horizontalCenterOffset: -width / 2
                     text: qsTr("Tx: ") + txCnt
+                }
+                Button{
+                    x: parent.width - width
+                    height: 35
+                    anchors.verticalCenter: parent.verticalCenter
+                    highlighted: true
+                    text:  qsTr("Reset")
+                    onClicked: {
+                        rxCnt = 0
+                        txCnt = 0
+                        recvTextArea.delAllItem()
+                    }
+
                 }
             }
         }
@@ -157,31 +198,36 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         width: parent.width
-        height: sendButton.height
+        height: sendTextArea.height
         Frame{
             x: parent.width * 0.01
             width: parent.width * 0.98
             height: parent.height
             ScrollView{
                 clip: true
-                width: parent.width - sendButton.width
+                width: parent.width - sendButton.width - 5
                 height: sendButton.height
                 anchors.verticalCenter: parent.verticalCenter
                 TextArea{
                     id: sendTextArea
+                    selectByMouse: true
+                    wrapMode: TextEdit.WrapAnywhere
+                    placeholderText: "Input msg data which you want to send"
+                    onHeightChanged: {
+                        if(height>80)
+                            height = 80
+                    }
                 }
             }
-
             Button{
                 id: sendButton
-                x: parent.width - sendButton.width
+                x: parent.width - sendButton.width + 5
+                height: sendTextArea.height
                 text: qsTr("send")
                 highlighted: true
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
-                    var senddata = sendTextArea.text
-                    txCnt = senddata.length
-                    TcpClientCom.sendDataToServer(senddata)
+                    sendDataToServer()
                 }
             }
         }

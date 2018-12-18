@@ -70,11 +70,10 @@ int TcpClientCom::sendDataToServer(QVariant data)
 
 QByteArray TcpClientCom::getDataFromBuffer(long long size)
 {
-    qDebug()<<this->readAll();
-//    if(size)
-//        return this->read(size);
-//    else
-//        return this->readAll();
+    if(size)
+        return this->read(size);
+    else
+        return this->readAll();
 }
 
 long long TcpClientCom::getDataBufferSize()

@@ -28,6 +28,13 @@ Item {
     function addItem(ip,port,time,data){
         settingModel.append({recvMessageIP:ip,recvMessagePort:port,
                             recvMessageTime:time,recvMessageData:data})
+        settingListView.currentIndex = settingModel.count - 1
+    }
+
+    function insertItem(ip,port,time,data){
+        settingModel.insert(0,{recvMessageIP:ip,recvMessagePort:port,
+                            recvMessageTime:time,recvMessageData:data})
+        settingListView.currentIndex = 0
     }
 
     function delAllItem(){
