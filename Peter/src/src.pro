@@ -1,6 +1,6 @@
 QT += quick
 CONFIG += c++11
-
+QT += network
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Refer to the documentation for the
@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    font.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -27,3 +28,13 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    initfile.h
+
+#Tcp Client
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../TcpClientCom/release/ -lTcpClientCom
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../TcpClientCom/debug/ -lTcpClientCom
+else:unix: LIBS += -L$$OUT_PWD/../TcpClientCom/ -lTcpClientCom
+INCLUDEPATH += $$PWD/../TcpClientCom
+DEPENDPATH += $$PWD/../TcpClientCom

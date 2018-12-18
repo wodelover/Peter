@@ -4,5 +4,6 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>TcpClientPage.qml</file>
+        <file>MessageView.qml</file>
     </qresource>
 </RCC>

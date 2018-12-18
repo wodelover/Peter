@@ -78,9 +78,9 @@ public:
      * @date: 2018-12-10 10:49:22
      * @Version: 1.0.0
     **/
-    Q_INVOKABLE void ReConectToServer();
-    Q_INVOKABLE void ConectServer();
-    Q_INVOKABLE void DisConectServer();
+    Q_INVOKABLE void reConectToServer();
+    Q_INVOKABLE void conectServer();
+    Q_INVOKABLE void disConectServer();
 
     /**
      * @MethodName: sendDataToServer

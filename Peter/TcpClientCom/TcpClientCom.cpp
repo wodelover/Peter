@@ -3,12 +3,14 @@
 
 TcpClientCom::TcpClientCom()
 {
+    initSignal();
 }
 
 TcpClientCom::TcpClientCom(QString ip, int port)
 {
     setServerIP(ip);
     setServerPort(port);
+    initSignal();
 }
 
 TcpClientCom::~TcpClientCom()
@@ -42,7 +44,7 @@ int TcpClientCom::serverPort()
     return m_serverPort;
 }
 
-void TcpClientCom::ReConectToServer()
+void TcpClientCom::reConectToServer()
 {
     // disconneted
     this->disconnectFromHost();
@@ -51,12 +53,12 @@ void TcpClientCom::ReConectToServer()
     this->connectToHost(m_serverIP,static_cast<unsigned short>(m_serverPort));
 }
 
-void TcpClientCom::ConectServer()
+void TcpClientCom::conectServer()
 {
     this->connectToHost(m_serverIP,static_cast<unsigned short>(m_serverPort));
 }
 
-void TcpClientCom::DisConectServer()
+void TcpClientCom::disConectServer()
 {
     this->disconnectFromHost();
 }
@@ -68,10 +70,11 @@ int TcpClientCom::sendDataToServer(QVariant data)
 
 QByteArray TcpClientCom::getDataFromBuffer(long long size)
 {
-    if(size)
-        return this->read(size);
-    else
-        return this->readAll();
+    qDebug()<<this->readAll();
+//    if(size)
+//        return this->read(size);
+//    else
+//        return this->readAll();
 }
 
 long long TcpClientCom::getDataBufferSize()
@@ -82,6 +85,7 @@ long long TcpClientCom::getDataBufferSize()
 void TcpClientCom::initSignal()
 {
     connect(this,SIGNAL(readyRead()),this,SIGNAL(hasNewDataFromServer()));
-    connect(this,SIGNAL(stateChanged(SocketState)),
-            this,SIGNAL(networkStatusChanged(NetWorkStatus)));
+
+//    connect(this,SIGNAL(stateChanged(SocketState)),
+//            this,SIGNAL(networkStatusChanged(NetWorkStatus)));
 }
