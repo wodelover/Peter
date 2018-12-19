@@ -66,11 +66,11 @@ void TcpServerCom::disconnectedClient(QString ip,int port,bool all)
     if(all){
         for (int i=0;i<m_clients.size();i++) {
             //            emit clientDisConnected(m_clients[i]->peerAddress().toString(),m_clients[i]->peerPort());
-            qDebug()<<m_clients[i]->peerAddress().toString()<<" "<<m_clients[i]->peerPort();
+//            qDebug()<<m_clients[i]->peerAddress().toString()<<" "<<m_clients[i]->peerPort();
             m_clients[i]->disconnectFromHost();
         }
         // 等待客户端信号触发自动删除
-        m_clients.clear();
+//        m_clients.clear();
     }else{
         for(int i=0;i<m_clients.size();i++){
             if(m_clients[i]->localAddress().toString()==ip&&m_clients[i]->peerPort() == port){
@@ -84,7 +84,8 @@ void TcpServerCom::disconnectedClient(QString ip,int port,bool all)
     }
 }
 
-long long TcpServerCom::sendDataToClient(QByteArray &data, QString ip, int port, bool broad)
+
+long long TcpServerCom::sendDataToClient(QByteArray data, QString ip, int port, bool broad)
 {
     if(broad){//广播
         long long size = -1;
@@ -95,11 +96,11 @@ long long TcpServerCom::sendDataToClient(QByteArray &data, QString ip, int port,
     }else{//单播
         for(int i=0;i<m_clients.size();i++){
             if(m_clients[i]->localAddress().toString()==ip
-                    ||m_clients[i]->localPort()==port){
+                    &&m_clients[i]->localPort()==port){
                 return m_clients[i]->write(data);
             }
         }
-        qDebug()<<"Send Data to:"+ip+" Error...";
+        qDebug()<<"Send Data to:"+ip +" :" + QString::number(port) +" Error...";
         return -1;
     }
 }
@@ -177,6 +178,7 @@ void TcpServerCom::clientDisconnect()
         if(m_clients[i]->state() == QAbstractSocket::UnconnectedState){
             emit clientDisConnected(m_clients[i]->peerAddress().toString(),m_clients[i]->peerPort());
             m_clients.remove(i);
+            break;
         }
     }
 }

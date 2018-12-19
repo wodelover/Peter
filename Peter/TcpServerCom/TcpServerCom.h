@@ -119,7 +119,7 @@ public:
      * @Parma: [int] port 端口号
      * @Param: [bool] broad 是否进行广播
     **/
-    Q_INVOKABLE long long sendDataToClient(QByteArray &data,QString ip,int port,bool broad = false);
+    Q_INVOKABLE long long sendDataToClient(QByteArray data,QString ip,int port,bool broad = false);
     /**
      * @MethodName: sendDataToClient
      * @Description: 根据客户端索引发送数据到客户端

@@ -59,7 +59,13 @@ Item {
         }
         var len  = senddata.length
         if(len){
-            TcpClientCom.sendDataToClient(senddata)
+
+            if(clientBox.currentIndex===0){//send all
+                TcpServerCom.sendDataToClient(senddata,"",1,true)
+            }else{
+                var str = clientBox.currentText.split(" : ")
+                TcpServerCom.sendDataToClient(senddata,str[0],str[1])
+            }
             txCnt += len
         }
     }
