@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <initfile.h>
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
@@ -9,7 +10,11 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    app.setWindowIcon(QIcon(QLatin1String(":/Image/system.ico")));
+
     QQmlApplicationEngine engine;
+
+    qRegisterMetaType<QAbstractSocket::SocketState>("QAbstractSocket::SocketState");
 
     TcpClientCom tcpClientCom;
     engine.rootContext()->setContextProperty("TcpClientCom", &tcpClientCom);

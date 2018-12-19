@@ -60,7 +60,7 @@ Item {
             Column{
                 anchors.fill: parent
                 anchors.topMargin: 5
-                spacing: 5
+                spacing: 3
                 Row{
                     id: baseinfo
                     spacing: 5

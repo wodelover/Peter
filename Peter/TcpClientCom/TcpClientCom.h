@@ -35,16 +35,6 @@ class TCPCLIENTCOMSHARED_EXPORT TcpClientCom : public QTcpSocket
     Q_PROPERTY(int serverPort READ serverPort WRITE setServerPort NOTIFY serverPortChanged)
 
 public:
-    Q_ENUMS(NetWorkStatus)
-    enum NetWorkStatus{
-        UnconnectedState,
-        HostLookupState,
-        ConnectingState,
-        ConnectedState,
-        BoundState,
-        ClosingState,
-        ListeningState,
-    };
 
     TcpClientCom();
     TcpClientCom(QString ip,int port);
@@ -113,7 +103,6 @@ public:
 signals:
     void serverIPChanged(QString ip);//IP地址改变
     void serverPortChanged(int port);//端口号改变
-    void networkStatusChanged(NetWorkStatus status);//网络状态改变
     void hasNewDataFromServer();//新数据到来
 
 private:

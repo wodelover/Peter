@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    src \
+    Peter \
     TcpClientCom \
     TcpServerCom \
     HttpCom

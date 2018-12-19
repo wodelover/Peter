@@ -32,7 +32,15 @@ Item {
             newData = TcpClientCom.getDataFromBuffer()
             rxCnt  += newData.length
             var time = new Date()
-            recvTextArea.insertItem(iptext.text,ipport.text,time.toLocaleTimeString(),newData)
+            recvTextArea.insertItem(iptext.text,ipport.text,time.toLocaleTimeString() ,newData)
+        }
+        onConnected:{
+            stateIcon.color = defaultIconColor
+            stateText.text = "Connected"
+        }
+        onDisconnected:{
+            stateIcon.color = "grey"
+            stateText.text = "UnConnected"
         }
     }
 
@@ -87,17 +95,39 @@ Item {
                 width: 40
                 placeholderText: qsTr("Port")
             }
+
+            Text {
+                id: stateIcon
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: ipport.right
+                anchors.leftMargin: 10
+                text: qsTr("\uf127")
+                color: "grey"
+                font.family: defaultIconFamily
+            }
+
+            Text {
+                id: stateText
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: stateIcon.right
+                anchors.leftMargin: 10
+                text: qsTr("UnConeted")
+            }
+
             Switch{
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.rightMargin: 5
                 onCheckedChanged: {
                     if(checked){
                         TcpClientCom.setServerIP(iptext.text)
                         TcpClientCom.setServerPort(ipport.text)
                         TcpClientCom.conectServer()
+                        iptext.enabled = false
+                        ipport.enabled = false
                     }else{
                         TcpClientCom.disConectServer()
+                        iptext.enabled = true
+                        ipport.enabled = true
                     }
                 }
             }

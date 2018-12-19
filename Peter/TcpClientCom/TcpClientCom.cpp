@@ -84,7 +84,4 @@ long long TcpClientCom::getDataBufferSize()
 void TcpClientCom::initSignal()
 {
     connect(this,SIGNAL(readyRead()),this,SIGNAL(hasNewDataFromServer()));
-
-//    connect(this,SIGNAL(stateChanged(SocketState)),
-//            this,SIGNAL(networkStatusChanged(NetWorkStatus)));
 }
