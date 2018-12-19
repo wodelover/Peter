@@ -2,7 +2,7 @@
 #define INITFILE_H
 
 #include <TcpClientCom.h>
-#include <QQmlApplicationEngine>
+#include <TcpServerCom.h>
 
 
 #endif // INITFILE_H

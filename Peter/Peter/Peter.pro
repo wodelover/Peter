@@ -39,3 +39,10 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../TcpClientCom/deb
 else:unix: LIBS += -L$$OUT_PWD/../TcpClientCom/ -lTcpClientCom
 INCLUDEPATH += $$PWD/../TcpClientCom
 DEPENDPATH += $$PWD/../TcpClientCom
+
+#Tcp Server
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../TcpServerCom/release/ -lTcpServerCom
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../TcpServerCom/debug/ -lTcpServerCom
+else:unix: LIBS += -L$$OUT_PWD/../TcpServerCom/ -lTcpServerCom
+INCLUDEPATH += $$PWD/../TcpServerCom
+DEPENDPATH += $$PWD/../TcpServerCom

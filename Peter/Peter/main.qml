@@ -6,6 +6,19 @@ ApplicationWindow {
     visible: true
     width: 400
     height: 800
+//    flags: Qt.FramelessWindowHint | Qt.Window
+
+    Item {//按键处理事件
+        anchors.fill: parent
+        focus: true
+        Keys.onPressed: {
+            switch(event.key){
+                case Qt.Key_Escape:
+                    Qt.quit()
+                    break;
+            }
+        }
+    }
 
     property string defaultIconFamily: font.name
     property string defaultIconColor: Qt.rgba(233/255,30/255,99/255,1)
@@ -19,8 +32,9 @@ ApplicationWindow {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
+        TcpServerPage{
+        }
         TcpClientPage{
-
         }
     }
 
@@ -29,10 +43,14 @@ ApplicationWindow {
         currentIndex: swipeView.currentIndex
 
         TabButton {
-            text: qsTr("Page 1")
+            font.family:  defaultIconFamily
+            text: qsTr("\uf10a")
+            font.pointSize: 20
         }
         TabButton {
-            text: qsTr("Page 2")
+            font.family:  defaultIconFamily
+            text: qsTr("\uf108")
+            font.pointSize: 20
         }
         TabButton {
             text: qsTr("Page 3")

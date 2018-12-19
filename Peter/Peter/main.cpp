@@ -16,8 +16,13 @@ int main(int argc, char *argv[])
 
     qRegisterMetaType<QAbstractSocket::SocketState>("QAbstractSocket::SocketState");
 
+    // TcpClientCom
     TcpClientCom tcpClientCom;
     engine.rootContext()->setContextProperty("TcpClientCom", &tcpClientCom);
+
+    // TcpServerCom
+    TcpServerCom tcpServerCom;
+    engine.rootContext()->setContextProperty("TcpServerCom", &tcpServerCom);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

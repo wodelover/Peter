@@ -39,18 +39,6 @@ class TCPSERVERCOMSHARED_EXPORT TcpServerCom : public QObject
     Q_PROPERTY(QString listenIP READ listenIP WRITE setListenIP NOTIFY listenIPChanged)
     Q_PROPERTY(int listenPort READ listenPort WRITE setListenPort NOTIFY listenPortChanged)
 public:
-    Q_ENUMS(NetWorkStatus)
-    enum NetWorkStatus{
-        UnconnectedState,//The socket is not connected.
-        HostLookupState,//The socket is performing a host name lookup.
-        ConnectingState,//The socket has started establishing a connection.
-        ConnectedState,//A connection is established.
-        BoundState,//The socket is bound to an address and port.
-        ClosingState,//The socket is about to close (data may still be waiting to be written).
-        ListeningState,//For internal use only.
-        NoMoreMenmery
-    };
-
     TcpServerCom();
     ~TcpServerCom();
     /**
@@ -108,7 +96,16 @@ public:
      * @Parma: [QString] ip 客户端IP地址
      * @Param: [bool] all 是否断开全部
     **/
-    Q_INVOKABLE void disconnectClient(QString ip, bool all=false);
+    Q_INVOKABLE void disconnectedClient(QString ip, int port, bool all=false);
+    /**
+     * @MethodName: disconectClient
+     * @Description: 断开客户端通过当前的容器索引
+     * @Autor: ZhangHao kinderzhang@foxmail.com
+     * @date: 2018-12-19 10:57:09
+     * @Version: 1.0.0
+     * @Parma: [int] index 客户端在容器中的索引
+    **/
+    Q_INVOKABLE void disconnectedClient(int index);
 
     /**
      * @MethodName: sendDataToClient
@@ -123,6 +120,38 @@ public:
      * @Param: [bool] broad 是否进行广播
     **/
     Q_INVOKABLE long long sendDataToClient(QByteArray &data,QString ip,int port,bool broad = false);
+    /**
+     * @MethodName: sendDataToClient
+     * @Description: 根据客户端索引发送数据到客户端
+     * @Autor: ZhangHao kinderzhang@foxmail.com
+     * @date: 2018-12-19 10:59:45
+     * @Version: 1.0.0
+     * @Parma: [QByteArray] data 待发送数据
+     * @Parma: [int] index 客户端索引
+    **/
+    Q_INVOKABLE long long sendDataToClient(QByteArray &data,int index);
+
+    /**
+     * @MethodName: getIPFromVector
+     * @Description: 从容器中获取对应索引客户端的IP地址
+     * @Autor: ZhangHao kinderzhang@foxmail.com
+     * @date: 2018-12-19 11:14:58
+     * @Version: 1.0.0
+     * @Parma: [int] 下标索引
+     * @return: [QString] 返回IP地址
+    **/
+    Q_INVOKABLE QString getIPFromVector(int index);
+
+    /**
+     * @MethodName: getPortFromVector
+     * @Description: 从容器中获取对应索引客户端的端口号
+     * @Autor: ZhangHao kinderzhang@foxmail.com
+     * @date: 2018-12-19 11:14:58
+     * @Version: 1.0.0
+     * @Parma: [int] 下标索引
+     * @return: [QString] 返回端口号
+    **/
+    Q_INVOKABLE int getPortFromVector(int index);
 
     /**
      * @MethodName: enAbleHeartPacket
@@ -136,24 +165,25 @@ public:
      * @Parma: [int] all 是否向所有客户端发送
      * @Parma: [int] time 心跳包间隔时间
     **/
-    Q_INVOKABLE void enAbleHeartPacket(QString ip="",QByteArray data="",bool all=true,int time = 1000 * 60 * 5);
+    Q_INVOKABLE void enableHeartPacket(QString ip="",QByteArray data="",bool all=true,int time = 1000 * 60 * 5);
 
 signals:
     void listenIPChanged(QString ip);
     void listenPortChanged(int port);
-    void hasNewDataFromClient(QTcpSocket *socket);
+    void newClientConnected(QString ip,int port);
+    void clientDisConnected(QString ip,int port);
+    void hasNewDataFromClient(QString ip,int port,QByteArray data);
 
 private slots:
     void hasNewConnection();
     void hasNewData();
-    void netWorkStatusChanged(NetWorkStatus status);
+    void clientDisconnect();
 
 private:
     void connectSignal();
     QString m_listenIP;
     int m_listenPort;
     QTcpServer *m_server;
-    QTcpSocket *m_socket;
     QVector<QTcpSocket *> m_clients;
     QTimer m_timer;
 };

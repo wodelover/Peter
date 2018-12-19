@@ -66,12 +66,15 @@ Item {
                     spacing: 5
                     Text {
                         text: recvMessageTime
+                        color: "red"
                     }
                     Text {
                         text: recvMessageIP
+                        color: "deeppink"
                     }
                     Text {
                         text: recvMessagePort
+                        color: "tomato"
                     }
                 }
                 Text {
