@@ -33,7 +33,9 @@ Item {
         }
         onRequestError:{
             // http://home_office.alinejun.com/index/test
-            console.log(errorCode)
+            var str = "Error Code: " + errorCode
+            var time = new Date()
+            recvTextArea.insertItem("Http Error","",time.toLocaleTimeString(),str)
         }
     }
 
@@ -78,6 +80,9 @@ Item {
                     id: cleanButton
                     width: parent.width
                     font.family: defaultIconFamily
+                    highlighted: true
+                    font.pointSize: 18
+                    flat: true
                     text: "\uf12d"
                     onClicked: {
                        recvTextArea.delAllItem()

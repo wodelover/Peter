@@ -31,13 +31,12 @@ ApplicationWindow {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
-        HttpClientPage{
-        }
 
         TcpClientPage{
         }
-
         TcpServerPage{
+        }
+        HttpClientPage{
         }
     }
 
