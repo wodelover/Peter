@@ -42,13 +42,13 @@ Item {
         }
         onClientDisConnected:{
             var str = ip + " : " + port
-//            console.log(str)
+            //            console.log(str)
             var index = clientBox.find(str)
-//            console.log("index:"+index)
+            //            console.log("index:"+index)
             if(index > 0)
-            clientModel.remove(index)
+                clientModel.remove(index)
             if(devCnt===0)
-            stateIcon.color = defaultIconColor
+                stateIcon.color = defaultIconColor
         }
     }
 
@@ -157,15 +157,50 @@ Item {
         anchors.bottom: sendRecv.top
         anchors.bottomMargin: 8
         width: parent.width
-        height: sendDurationTime.height * 2 - 5
+        height: sendDurationTime.height * 3
         Frame{
             x: parent.width * 0.01
             width: parent.width * 0.98
-            height: sendDurationTime.height * 2
+            height: sendDurationTime.height * 3
             anchors.centerIn: parent
+
+            Item {
+                width: parent.width
+                height: sendDurationTime.height
+                y: -10
+                ComboBox {
+                    id: clientBox
+                    width: parent.width - disconnectButton.width - 5
+                    height: 35
+                    anchors.verticalCenter: parent.verticalCenter
+                    model: ListModel{
+                        id: clientModel
+                        ListElement{text:"All Connections"}
+                    }
+                }
+                Button{//Disconnection Button
+                    id: disconnectButton
+                    x: clientBox.x + clientBox.width + 5
+                    height: 35
+                    anchors.verticalCenter: parent.verticalCenter
+                    highlighted: true
+                    text: qsTr("\uf127")
+                    font.family: defaultIconFamily
+                    onClicked: {
+                        if(clientBox.currentIndex===0){//colse all
+                            TcpServerCom.disconnectedClient("",1,true)
+                        }else{
+                            var str = clientBox.currentText.split(" : ")
+                            TcpServerCom.disconnectedClient(str[0],str[1])
+                        }
+                    }
+                }
+            }
+
             Item{
                 width: parent.width
                 height: sendDurationTime.height
+                y: sendDurationTime.height
                 Text {
                     id: sendTextTag
                     text: qsTr("间隔发送(ms)")
@@ -197,21 +232,7 @@ Item {
                     }
                 }
 
-                Text {
-                    id: rX
-                    anchors.verticalCenter: sendTextTag.verticalCenter
-                    x: sendDurationTimeCheck.x + sendDurationTimeCheck.width
-                    text: qsTr("Rx: ") + rxCnt
-                }
-
-                Text {
-                    id: tX
-                    anchors.verticalCenter: sendTextTag.verticalCenter
-                    x: enternextTag.x - width - 30
-                    text: qsTr("Tx: ") + txCnt
-                }
-
-                CheckBox{
+                CheckBox{//回车换行
                     id: enterNextColum
                     x: parent.width - width + 10
                     anchors.verticalCenter: sendTextTag.verticalCenter
@@ -227,41 +248,23 @@ Item {
             Item {
                 width: parent.width
                 height: rX.height
-                y: sendDurationTime.height
-                ComboBox {
-                    id: clientBox
-                    width: parent.width - resetButton.width - disconnectButton.width - 20
-                    height: 35
-                    anchors.verticalCenter: parent.verticalCenter
-                    model: ListModel{
-                        id: clientModel
-                        ListElement{text:"All Connections"}
-                    }
+                y: sendDurationTime.height * 2
+                Text {
+                    id: rX
+                    text: qsTr("Rx: ") + rxCnt
                 }
-                Button{//Disconnection Button
-                    id: disconnectButton
-                    x: resetButton.x - width - 5
-                    height: 35
-                    anchors.verticalCenter: parent.verticalCenter
-                    highlighted: true
-                    text: qsTr("\uf127")
-                    font.family: defaultIconFamily
-                    onClicked: {
-                        if(clientBox.currentIndex===0){//colse all
-                            TcpServerCom.disconnectedClient("",1,true)
-                        }else{
-                            var str = clientBox.currentText.split(" : ")
-                            TcpServerCom.disconnectedClient(str[0],str[1])
-                        }
-                    }
+                Text {
+                    id: tX
+                    anchors.horizontalCenter:  parent.horizontalCenter
+                    anchors.horizontalCenterOffset: -width / 2
+                    text: qsTr("Tx: ") + txCnt
                 }
-                Button{//Reset Button
-                    id: resetButton
+                Button{//reset button
                     x: parent.width - width
                     height: 35
                     anchors.verticalCenter: parent.verticalCenter
                     highlighted: true
-                    text: qsTr("Reset")
+                    text:  qsTr("Reset")
                     onClicked: {
                         rxCnt = 0
                         txCnt = 0
@@ -291,7 +294,7 @@ Item {
                     id: sendTextArea
                     selectByMouse: true
                     wrapMode: TextEdit.WrapAnywhere
-                    placeholderText: "Input msg data which you want to send"
+                    placeholderText: "Input msg which you want send"
                     onHeightChanged: {
                         if(height>80)
                             height = 80

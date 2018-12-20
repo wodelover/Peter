@@ -33,6 +33,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     initfile.h
 
+#配置win系统显示图标
+RC_ICONS = Image/system.ico
+#配置Android系统
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/AndroidSource
+
+DISTFILES += \
+    AndroidSource/AndroidManifest.xml
+
 #Tcp Client
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../TcpClientCom/release/ -lTcpClientCom
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../TcpClientCom/debug/ -lTcpClientCom
@@ -46,3 +54,10 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../TcpServerCom/deb
 else:unix: LIBS += -L$$OUT_PWD/../TcpServerCom/ -lTcpServerCom
 INCLUDEPATH += $$PWD/../TcpServerCom
 DEPENDPATH += $$PWD/../TcpServerCom
+
+#Http Client
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../HttpCom/release/ -lHttpCom
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../HttpCom/debug/ -lHttpCom
+else:unix: LIBS += -L$$OUT_PWD/../HttpCom/ -lHttpCom
+INCLUDEPATH += $$PWD/../HttpCom
+DEPENDPATH += $$PWD/../HttpCom

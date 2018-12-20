@@ -24,6 +24,10 @@ int main(int argc, char *argv[])
     TcpServerCom tcpServerCom;
     engine.rootContext()->setContextProperty("TcpServerCom", &tcpServerCom);
 
+    // TcpServerCom
+    HttpCom httpClientCom;
+    engine.rootContext()->setContextProperty("HttpClientCom", &httpClientCom);
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

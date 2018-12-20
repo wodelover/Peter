@@ -6,5 +6,6 @@
         <file>TcpClientPage.qml</file>
         <file>MessageView.qml</file>
         <file>TcpServerPage.qml</file>
+        <file>HttpClientPage.qml</file>
     </qresource>
 </RCC>

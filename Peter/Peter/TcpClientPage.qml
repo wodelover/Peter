@@ -246,7 +246,7 @@ Item {
                     id: sendTextArea
                     selectByMouse: true
                     wrapMode: TextEdit.WrapAnywhere
-                    placeholderText: "Input msg data which you want to send"
+                    placeholderText: "Input msg which you want send"
                     onHeightChanged: {
                         if(height>80)
                             height = 80

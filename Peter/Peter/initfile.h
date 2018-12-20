@@ -3,6 +3,6 @@
 
 #include <TcpClientCom.h>
 #include <TcpServerCom.h>
-
+#include <httpcom.h>
 
 #endif // INITFILE_H

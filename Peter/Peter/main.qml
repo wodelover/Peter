@@ -20,21 +20,24 @@ ApplicationWindow {
         }
     }
 
-    property string defaultIconFamily: font.name
+    property string defaultIconFamily: fontawesome.name
     property string defaultIconColor: Qt.rgba(233/255,30/255,99/255,1)
     FontLoader{
-        id: font
+        id: fontawesome
         source: "./Font/fontawesome-webfont.ttf"
     }
-
 
     SwipeView {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
-        TcpServerPage{
+        HttpClientPage{
         }
+
         TcpClientPage{
+        }
+
+        TcpServerPage{
         }
     }
 
@@ -53,7 +56,9 @@ ApplicationWindow {
             font.pointSize: 20
         }
         TabButton {
-            text: qsTr("Page 3")
+            font.family:  defaultIconFamily
+            text: qsTr("\uf26b")
+            font.pointSize: 20
         }
     }
 }
