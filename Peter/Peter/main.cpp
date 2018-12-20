@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    app.setWindowIcon(QIcon(QLatin1String(":/Image/system.ico")));
+    app.setWindowIcon(QIcon(QLatin1String(":/Image/Image/system.ico")));
 
     QQmlApplicationEngine engine;
 

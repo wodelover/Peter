@@ -95,8 +95,8 @@ long long TcpServerCom::sendDataToClient(QByteArray data, QString ip, int port, 
         return size;
     }else{//单播
         for(int i=0;i<m_clients.size();i++){
-            if(m_clients[i]->localAddress().toString()==ip
-                    &&m_clients[i]->localPort()==port){
+            if(m_clients[i]->peerAddress().toString()==ip
+                    &&m_clients[i]->peerPort()==port){
                 return m_clients[i]->write(data);
             }
         }
