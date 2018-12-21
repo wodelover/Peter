@@ -1,7 +1,16 @@
 <?xml version="1.0"?>
 <manifest package="org.qtproject.example.Peter" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="1" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="Peter" android:icon="@drawable/icon">
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:label="Peter" android:screenOrientation="unspecified" android:launchMode="singleTop">
+    <application android:hardwareAccelerated="true" 
+				 android:name="org.qtproject.qt5.android.bindings.QtApplication" 
+				 android:label="Peter" 
+				 android:icon="@drawable/icon">
+				 
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" 
+			      android:name="org.qtproject.qt5.android.bindings.QtActivity" 
+				  android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
+				  android:label="Peter" 
+				  android:screenOrientation="unspecified" 
+				  android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
