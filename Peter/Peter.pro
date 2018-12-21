@@ -4,4 +4,5 @@ SUBDIRS += \
     Peter \
     TcpClientCom \
     TcpServerCom \
-    HttpCom
+    HttpCom \
+    BluetoothCom
