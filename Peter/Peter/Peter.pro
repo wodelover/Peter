@@ -1,6 +1,6 @@
 QT += quick
 CONFIG += c++11
-QT += network
+QT += network bluetooth
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Refer to the documentation for the
@@ -55,9 +55,16 @@ else:unix: LIBS += -L$$OUT_PWD/../TcpServerCom/ -lTcpServerCom
 INCLUDEPATH += $$PWD/../TcpServerCom
 DEPENDPATH += $$PWD/../TcpServerCom
 
-#Http Client
+#Http
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../HttpCom/release/ -lHttpCom
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../HttpCom/debug/ -lHttpCom
 else:unix: LIBS += -L$$OUT_PWD/../HttpCom/ -lHttpCom
 INCLUDEPATH += $$PWD/../HttpCom
 DEPENDPATH += $$PWD/../HttpCom
+
+#Bluetooth
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/release/ -lBluetoothCom
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/debug/ -lBluetoothCom
+else:unix: LIBS += -L$$OUT_PWD/../BluetoothCom/ -lBluetoothCom
+INCLUDEPATH += $$PWD/../BluetoothCom
+DEPENDPATH += $$PWD/../BluetoothCom

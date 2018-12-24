@@ -6,6 +6,8 @@ BluetoothCom::BluetoothCom()
     m_localDevice = new QBluetoothLocalDevice;
     m_socket = new QBluetoothSocket;
 
+    m_uuid = "00001101-0000-1000-8000-00805F9B34FB";
+
     //connect signal
     connect(m_discoveryAgent,SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
             this,SLOT(newDeviceDiscovered(QBluetoothDeviceInfo)));

@@ -24,9 +24,13 @@ int main(int argc, char *argv[])
     TcpServerCom tcpServerCom;
     engine.rootContext()->setContextProperty("TcpServerCom", &tcpServerCom);
 
-    // TcpServerCom
+    // HttpCom
     HttpCom httpClientCom;
     engine.rootContext()->setContextProperty("HttpClientCom", &httpClientCom);
+
+    // HttpCom
+    BluetoothCom blueToothCom;
+    engine.rootContext()->setContextProperty("BluetoothCom", &blueToothCom);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

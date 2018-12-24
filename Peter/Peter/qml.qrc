@@ -8,5 +8,7 @@
         <file>TcpServerPage.qml</file>
         <file>HttpClientPage.qml</file>
         <file>MessageBox.qml</file>
+        <file>BlueToothPage.qml</file>
+        <file>SupportMePage.qml</file>
     </qresource>
 </RCC>

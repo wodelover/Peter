@@ -6,7 +6,6 @@ ApplicationWindow {
     visible: true
     width: 400
     height: 800
-//    flags: Qt.FramelessWindowHint | Qt.Window
 
     Item {//按键处理事件
         anchors.fill: parent
@@ -27,9 +26,75 @@ ApplicationWindow {
         source: "./Font/fontawesome-webfont.ttf"
     }
 
+
+    property var tittleName: [
+        qsTr("TCP Client"),
+        qsTr("TCP Server"),
+        qsTr("HTTP Client"),
+        qsTr("BlueTooth")
+    ]
+
+    SupportMePage{
+        id: supportme
+        anchors.fill: parent
+    }
+
+
+    Rectangle{
+        id: tittle
+        color: defaultIconColor
+        width: parent.width
+        height: tabBar.height
+        Button {
+            flat: true
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.height * 0.8
+            Text {
+                anchors.centerIn: parent
+                font.family: defaultIconFamily
+                text: "\uf02d"
+                color: "white"
+                font.pixelSize: parent.height * 0.8
+            }
+            onClicked: {
+            }
+        }
+
+        Text {
+            id: pageTittle
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: tittleName[swipeView.currentIndex]
+            font.pointSize: parent.height / 2
+            color: "white"
+            font.bold: true
+        }
+
+        Button {
+            anchors.right: parent.right
+            width: parent.height * 0.8
+            flat: true
+            anchors.verticalCenter: parent.verticalCenter
+            Text {
+                anchors.centerIn: parent
+                font.family: defaultIconFamily
+                text: "\uf029"
+                color: "white"
+                font.pixelSize: parent.height * 0.8
+            }
+
+            onClicked: {
+                supportme.openPage()
+            }
+        }
+    }
+
     SwipeView {
         id: swipeView
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height - tittle.height
+        y: tittle.height
         currentIndex: tabBar.currentIndex
 
         TcpClientPage{
@@ -37,6 +102,8 @@ ApplicationWindow {
         TcpServerPage{
         }
         HttpClientPage{
+        }
+        BlueToothPage{
         }
     }
 
@@ -57,6 +124,11 @@ ApplicationWindow {
         TabButton {
             font.family:  defaultIconFamily
             text: qsTr("\uf26b")
+            font.pointSize: 20
+        }
+        TabButton {
+            font.family:  defaultIconFamily
+            text: qsTr("\uf293")
             font.pointSize: 20
         }
     }

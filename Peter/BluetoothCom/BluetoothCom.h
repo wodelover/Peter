@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QByteArray>
+#include <QVariant>
 
 /**
  * @ClassName: BluetoothCom
@@ -169,7 +170,7 @@ private:
     QBluetoothLocalDevice *m_localDevice;//用于操作本地蓝牙
     QBluetoothSocket *m_socket;//用于进行数据通信
     //默认使用串口通信UUID，如需使用其他模式，需要指定对应的UUID值
-    QString m_uuid = "00001101-0000-1000-8000-00805F9B34FB";
+    QString m_uuid;
     ComProtocol m_protocol = RfcommProtocol;
 };
 
