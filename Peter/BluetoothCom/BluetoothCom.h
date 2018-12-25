@@ -37,7 +37,7 @@ class BLUETOOTHCOMSHARED_EXPORT BluetoothCom : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged)
-    Q_PROPERTY(ComProtocol protocol READ protocol WRITE setProtocol NOTIFY protocolChanged)
+    Q_PROPERTY(int protocol READ protocol WRITE setProtocol NOTIFY protocolChanged)
 
 public:
     Q_ENUMS(ComProtocol)
@@ -74,7 +74,7 @@ public:
      * @date: 2018-12-21 14:44:51
      * @Version: 1.0.0
     **/
-    Q_INVOKABLE ComProtocol protocol();
+    Q_INVOKABLE int protocol();
     /**
      * @MethodName: setProtocol
      * @Description: 设置通信协议
@@ -83,7 +83,7 @@ public:
      * @Version: 1.0.0
      * @Parma: [ComProtocol]  protocol 通信协议
     **/
-    Q_INVOKABLE void setProtocol(ComProtocol protocol = RfcommProtocol);
+    Q_INVOKABLE void setProtocol(int protocol = RfcommProtocol);
 
 
     /**
@@ -106,7 +106,7 @@ public:
 
     /**
      * @MethodName: setBluetoothDiscoverd
-     * @Description: 设备蓝牙设备是否可见
+     * @Description: 设备蓝牙设备可见
      * @Autor: ZhangHao kinderzhang@foxmail.com
      * @date: 2018-12-21 14:14:23
      * @Version: 1.0.0

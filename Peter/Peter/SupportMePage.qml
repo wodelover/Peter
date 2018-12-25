@@ -9,7 +9,7 @@
 /*************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Controls 2.12
+import QtQuick.Controls 2.7
 
 /**
  * @ClassName: SupportMePage
@@ -21,9 +21,16 @@ import QtQuick.Controls 2.12
  * @update_time
 **/
 Item {
-
-    function openPage(){
+    function openPopup(){
         popue.open()
+    }
+
+    function closePopup(){
+        popue.close()
+    }
+
+    function delAllItem(){
+        settingModel.clear()
     }
 
     Popup{
@@ -37,12 +44,52 @@ Item {
         ScrollView{
             anchors.fill: parent
             clip: true
-            Image {
-                anchors.centerIn: parent
-                width: 400
-                height: popue.contentHeight
-                source: "/Image/Image/supportme.png"
+            ScrollView {
+                id: settingScrollView
+                anchors.fill: parent
+                clip: true
+                ListView {
+                    id: settingListView
+                    anchors.fill: parent
+                    model: settingModel
+                    delegate: settingDelegate
+                    highlightFollowsCurrentItem: true
+                    highlightMoveDuration: 80 // 设置移动选中项的过渡时间
+                    highlightRangeMode: ListView.NoHighlightRange//设置内容自动滚动的方式
+                }
             }
         }
     }
+
+    ListModel{//模型数据
+        id: settingModel
+        ListElement{
+            imgPath: "/Image/Image/supportme.png"
+        }
+    }
+
+    Component{//单个子项组件
+        id: settingDelegate
+        Item{
+            id: delegateItem
+            width: mainwindow.width - popue.width
+            height: image.height
+            Image {
+                id: image
+                source: imgPath
+            }
+            Component.onCompleted: {
+                var oldwidth = image.width
+                var oldheight = image.height
+//                console.log(delegateItem.width)
+                image.width = delegateItem.width
+                image.height = delegateItem.width * oldheight / oldwidth
+//                console.log(oldwidth)
+//                console.log(oldheight)
+//                console.log(image.width)
+//                console.log(image.height)
+            }
+        }
+    }
+
 }

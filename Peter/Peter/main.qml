@@ -12,9 +12,9 @@ ApplicationWindow {
         focus: true
         Keys.onPressed: {
             switch(event.key){
-                case Qt.Key_Escape:
-                    Qt.quit()
-                    break;
+            case Qt.Key_Escape:
+                Qt.quit()
+                break;
             }
         }
     }
@@ -39,6 +39,10 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
+    ListPopupView{
+        id: scanListDevice
+        anchors.fill: parent
+    }
 
     Rectangle{
         id: tittle
@@ -85,7 +89,7 @@ ApplicationWindow {
             }
 
             onClicked: {
-                supportme.openPage()
+                supportme.openPopup()
             }
         }
     }

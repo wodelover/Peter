@@ -22,28 +22,29 @@ import QtQuick.Layouts 1.12
  * @update_time
 **/
 Item {
-    id: tcpClientPage
+    id: bluetoothPage
     property int rxCnt: 0
     property int txCnt: 0
     property string newData: ""
+
     Connections{
-        target: TcpClientCom
-        onHasNewDataFromServer:{
-            newData = TcpClientCom.getDataFromBuffer()
-            rxCnt  += newData.length
-            var time = new Date()
-            recvTextArea.insertItem(iptext.text,ipport.text,time.toLocaleTimeString() ,newData)
-        }
-        onConnected:{
-            stateIcon.color = "limegreen"
-            stateText.text = "Connected"
-            connectSwitch.checked = true
-        }
-        onDisconnected:{
-            stateIcon.color = defaultIconColor
-            stateText.text = "UnConnected"
-            connectSwitch.checked = false
-        }
+//        target: TcpClientCom
+//        onHasNewDataFromServer:{
+//            newData = TcpClientCom.getDataFromBuffer()
+//            rxCnt  += newData.length
+//            var time = new Date()
+//            recvTextArea.insertItem(iptext.text,ipport.text,time.toLocaleTimeString() ,newData)
+//        }
+//        onConnected:{
+//            stateIcon.color = "limegreen"
+//            stateText.text = "Connected"
+//            connectSwitch.checked = true
+//        }
+//        onDisconnected:{
+//            stateIcon.color = defaultIconColor
+//            stateText.text = "UnConnected"
+//            connectSwitch.checked = false
+//        }
     }
 
     function sendDataToRemoteDevice(){
@@ -62,7 +63,7 @@ Item {
         id: recvArea
         y: topConfig.height
         width: parent.width
-        height: tcpClientPage.height - sendRecv.height - topConfig.height - middleConfig.height - 20
+        height: bluetoothPage.height - sendRecv.height - topConfig.height - middleConfig.height - 20
         Frame{
             width: parent.width * 0.98
             height: parent.height * 0.98
@@ -85,43 +86,36 @@ Item {
             height: parent.height
             TextField{
                 id: uuidText
-                width: parent.width - stateIcon .width - stateText.width - uuidButton.width - 25
+                width: parent.width - scanButton.width - uuidButton.width - 8
                 anchors.leftMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
-                placeholderText: BluetoothCom.uuid
-            }
-
-            Text {
-                id: stateIcon
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: stateText.left
-                anchors.rightMargin: 10
-                text: qsTr("\uf1e6")
-                color: defaultIconColor
-                font.family: defaultIconFamily
-            }
-
-            Text {
-                id: stateText
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: uuidButton.left
-                anchors.rightMargin: 10
-                text: qsTr("UnConeted")
+//                placeholderText: BluetoothCom.uuid
             }
 
             Button{
                 id: uuidButton
                 height: uuidText.height
-                anchors.right: parent.right
+                anchors.right: scanButton.left
+                anchors.rightMargin: 5
                 highlighted: true
                 text: qsTr("SetUUid")
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
                     var uuid = uuidText.text
                     if(uuid.length>10){
-                        BluetoothCom.setUuid(uuid)
+//                        BluetoothCom.setUuid(uuid)
                     }
                 }
+            }
+
+            Button{
+                id: scanButton
+                height: uuidText.height
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                highlighted: true
+                text: qsTr("Scan")
+                onClicked: scanListDevice.openPopup()
             }
         }
     }
@@ -141,25 +135,45 @@ Item {
                 y: -10
                 width: parent.width
                 height: uuidText.height
-                Button{
+
+                ComboBox{
                     height: uuidText.height
-                    anchors.left: parent.left
-                    highlighted: true
-                    text: qsTr("Scan")
+                    width: parent.width - stateIcon.width - stateText.width - openSwitch.width - 30
+                    model: ["L2capProtocol","RfcommProtocol"]
+                    currentIndex: 1
+                    onCurrentIndexChanged: {
+
+                    }
                 }
 
                 Text {
-                    id: devName
-                    anchors.centerIn: parent
-                    text: qsTr("No Device Connected")
+                    id: stateIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: stateText.left
+                    anchors.rightMargin: 10
+                    text: qsTr("\uf1e6")
+                    color: defaultIconColor
+                    font.family: defaultIconFamily
+                }
+
+                Text {
+                    id: stateText
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: openSwitch.left
+                    anchors.rightMargin: 10
+                    text: qsTr("UnConeted")
                 }
 
                 Switch{
-                    text: checked ? qsTr("close") : qsTr("open")
+                    id: openSwitch
                     anchors.right: parent.right
                     height: uuidText.height
                     onCheckedChanged: {
-
+                        if(checked){
+                            BluetoothCom.openBluetooth()
+                        }else{
+                            BluetoothCom.closeBluetooth()
+                        }
                     }
                 }
             }

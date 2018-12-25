@@ -10,5 +10,6 @@
         <file>MessageBox.qml</file>
         <file>BlueToothPage.qml</file>
         <file>SupportMePage.qml</file>
+        <file>ListPopupView.qml</file>
     </qresource>
 </RCC>
