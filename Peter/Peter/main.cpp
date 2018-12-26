@@ -3,7 +3,6 @@
 #include <QQmlContext>
 #include <initfile.h>
 #include <QIcon>
-#include <MyBlueTooth.h>
 
 int main(int argc, char *argv[])
 {
@@ -20,7 +19,7 @@ int main(int argc, char *argv[])
     // HttpCom
     HttpCom httpClientCom;
     // BluetoothCom
-    MyBlueTooth blueToothCom;
+    BluetoothCom blueToothCom;
 
     QQmlApplicationEngine engine;
 

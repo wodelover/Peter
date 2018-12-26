@@ -14,8 +14,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-#    BluetoothCom.cpp
-    MyBlueTooth.cpp
+    BluetoothCom.cpp
+
+HEADERS += \
+    initfile.h \
+    BluetoothCom.h
+
 
 RESOURCES += qml.qrc \
     font.qrc \
@@ -31,11 +35,6 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-HEADERS += \
-    initfile.h \
-#    BluetoothCom.h
-    MyBlueTooth.h
 
 #配置win系统显示图标
 RC_ICONS = Image/system.ico

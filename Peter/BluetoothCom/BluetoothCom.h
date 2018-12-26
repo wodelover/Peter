@@ -13,12 +13,12 @@
 
 //bluetooth header files
 #include <bluetoothcom_global.h>
-#include <QtBluetooth/qtbluetoothglobal.h>
+//#include <QtBluetooth/qbluetoothglobal.h>
 #include <QtBluetooth/qbluetoothlocaldevice.h>
-#include <qbluetoothaddress.h>
-#include <qbluetoothdevicediscoveryagent.h>
-#include <qbluetoothlocaldevice.h>
-#include <qbluetoothsocket.h>
+#include <QtBluetooth/qbluetoothaddress.h>
+#include <QtBluetooth/qbluetoothdevicediscoveryagent.h>
+#include <QtBluetooth/qbluetooth.h>
+#include <QtBluetooth/qbluetoothsocket.h>
 
 #include <QObject>
 #include <QByteArray>
@@ -141,7 +141,7 @@ public:
      * @Version: 1.0.0
      * @Parma: [QString] addres 设备地址
     **/
-    Q_INVOKABLE void connectDevice(QString addres = "98:D3:32:30:52:CB");
+    Q_INVOKABLE void connectDevice(QString addres);
 
     /**
      * @MethodName: disConnectDevice
@@ -165,14 +165,13 @@ public:
 
 private slots:
     void newDeviceDiscovered(QBluetoothDeviceInfo device);//发现设备处理函数
-    void hasconnectDevice();//连接上设备处理函数
     void readDataBuf();//读取发送过来的数据
 
 signals:
     void hasDataComeFromRemoteDevice(QByteArray data);
     void hasNewDeviceFounded(QString name,QString addr);
-    void connectedRemoteDevice();
-    void disConnectedRemoteDevice();
+    void connected();
+    void disConnected();
     void uuidChanged(QString uuid);
     void protocolChanged(int protocol);
     void blueToothStatusChanged(int status);

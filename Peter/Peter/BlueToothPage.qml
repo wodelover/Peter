@@ -33,7 +33,7 @@ Item {
 //            scanListDevice.insertItem(name,addr)
 //        }
 
-        onReadBluetoothDataEventSignal:{
+        onHasDataComeFromRemoteDevice:{
             newData = data
             var time = new Date()
             recvTextArea.insertItem("","",time.toLocaleTimeString() ,newData)
@@ -59,7 +59,7 @@ Item {
         }
         var len  = senddata.length
         if(len){
-            TcpClientCom.sendDataToRemoteDevice(senddata)
+            BluetoothCom.sendDataToRemoteDevice(senddata)
             txCnt += len
         }
     }
@@ -94,7 +94,7 @@ Item {
                 width: parent.width - openSwitch.width - uuidButton.width - 8
                 anchors.leftMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
-//                placeholderText: BluetoothCom.uuid
+                placeholderText: BluetoothCom.uuid
             }
 
             Button{
@@ -108,7 +108,7 @@ Item {
                 onClicked: {
                     var uuid = uuidText.text
                     if(uuid.length>10){
-//                        BluetoothCom.setUuid(uuid)
+                        BluetoothCom.setUuid(uuid)
                     }
                 }
             }

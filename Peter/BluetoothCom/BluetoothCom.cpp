@@ -2,19 +2,22 @@
 
 BluetoothCom::BluetoothCom(QObject *parent) : QObject(parent)
 {
-    m_discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
     m_localDevice = new QBluetoothLocalDevice(this);
     m_localDevice->setHostMode(QBluetoothLocalDevice::HostDiscoverable);
+    m_discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
     m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
     connect(m_discoveryAgent,SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
             this,SLOT(newDeviceDiscovered(QBluetoothDeviceInfo)));
 
+    // Start a discovery
+    m_discoveryAgent->start();
+
     connect(m_socket,SIGNAL(connected()),
-            this,SLOT(hasconnectDevice()));
+            this,SIGNAL(connected()));
 
     connect(m_socket,SIGNAL(disconnected()),
-            this,SIGNAL(disConnectedRemoteDevice()));
+            this,SIGNAL(disConnected()));
 
     connect(m_socket,SIGNAL(readyRead()),
             this,SLOT(readDataBuf()));
@@ -73,14 +76,8 @@ void BluetoothCom::openBluetooth()
 
 void BluetoothCom::closeBluetooth()
 {
-    //关闭发现服务
-//    m_discoveryAgent->stop();
-
     //关闭蓝牙
     m_localDevice->setHostMode(QBluetoothLocalDevice::HostPoweredOff);
-
-//    disconnect(m_discoveryAgent,SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
-//            this,SLOT(newDeviceDiscovered(QBluetoothDeviceInfo)));
 }
 
 void BluetoothCom::setBluetoothDiscoverd()
@@ -95,24 +92,8 @@ void BluetoothCom::searchDevice()
 
 void BluetoothCom::connectDevice(QString addres)
 {
-//    QBluetoothAddress address(addres);
-//    socket->connectToService(address, QBluetoothUuid(serviceUuid) ,QIODevice::ReadWrite);
-
-//    m_socket = new QBluetoothSocket(static_cast<QBluetoothServiceInfo::Protocol>(m_protocol));
-
-    m_socket->connectToService(QBluetoothAddress(addres),QBluetoothUuid(m_uuid),QIODevice::ReadWrite);
-
-//    connect(m_socket,SIGNAL(connected()),
-//            this,SLOT(hasconnectDevice()));
-
-//    connect(m_socket,SIGNAL(disconnected()),
-//            this,SIGNAL(disConnectedRemoteDevice()));
-
-//    connect(m_socket,SIGNAL(readyRead()),
-//            this,SLOT(readDataBuf()));
-
-    //关闭发现服务
-//    m_discoveryAgent->stop();
+    QBluetoothAddress address(addres);
+    m_socket->connectToService(address, QBluetoothUuid(m_uuid) ,QIODevice::ReadWrite);
 }
 
 void BluetoothCom::disConnectDevice()
@@ -135,11 +116,6 @@ long long BluetoothCom::sendDataToRemoteDevice(QByteArray senddata,long long siz
 void BluetoothCom::newDeviceDiscovered(QBluetoothDeviceInfo device)
 {
     emit hasNewDeviceFounded(device.name(),device.address().toString());
-}
-
-void BluetoothCom::hasconnectDevice()
-{
-    m_discoveryAgent->stop();
 }
 
 void BluetoothCom::readDataBuf()
