@@ -12,7 +12,7 @@
 #define BLUETOOTHCOM_H
 
 //bluetooth header files
-#include <bluetoothcom_global.h>
+//#include <bluetoothcom_global.h>
 #include <QtBluetooth/qtbluetoothglobal.h>
 #include <QtBluetooth/qbluetoothlocaldevice.h>
 #include <qbluetoothaddress.h>
@@ -33,7 +33,7 @@
  * @update_autor
  * @update_time
 **/
-class BLUETOOTHCOMSHARED_EXPORT BluetoothCom : public QObject
+class BluetoothCom : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged)
@@ -171,8 +171,8 @@ private slots:
 signals:
     void hasDataComeFromRemoteDevice(QByteArray data);
     void hasNewDeviceFounded(QString name,QString addr);
-    void connectedRemoteDevice();
-    void disConnectedRemoteDevice();
+    void connected();
+    void disConnected();
     void uuidChanged(QString uuid);
     void protocolChanged(int protocol);
     void blueToothStatusChanged(int status);

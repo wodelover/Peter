@@ -11,19 +11,22 @@ BluetoothCom::BluetoothCom(QObject *parent) : QObject(parent)
             this,SLOT(newDeviceDiscovered(QBluetoothDeviceInfo)));
 
     connect(m_socket,SIGNAL(connected()),
-            this,SLOT(hasconnectDevice()));
+            this,SIGNAL(connected()));
 
     connect(m_socket,SIGNAL(disconnected()),
-            this,SIGNAL(disConnectedRemoteDevice()));
+            this,SIGNAL(disConnected()));
 
     connect(m_socket,SIGNAL(readyRead()),
             this,SLOT(readDataBuf()));
 
-    m_discoveryAgent->start();
+//    m_localDevice->powerOn();
+
+//    m_discoveryAgent->start();
 }
 
 BluetoothCom::~BluetoothCom()
 {
+
 }
 
 QString BluetoothCom::uuid()

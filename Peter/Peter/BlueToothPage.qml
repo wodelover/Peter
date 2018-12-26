@@ -28,19 +28,24 @@ Item {
     property string newData: ""
 
     Connections{
-//        target: TcpClientCom
-//        onHasNewDataFromServer:{
-//            newData = TcpClientCom.getDataFromBuffer()
-//            rxCnt  += newData.length
-//            var time = new Date()
-//            recvTextArea.insertItem(iptext.text,ipport.text,time.toLocaleTimeString() ,newData)
+        target: BluetoothCom
+//        onHasNewDeviceFounded:{
+//            scanListDevice.insertItem(name,addr)
 //        }
+
+        onReadBluetoothDataEventSignal:{
+            newData = data
+            var time = new Date()
+            recvTextArea.insertItem("","",time.toLocaleTimeString() ,newData)
+            rxCnt += newData.length
+        }
+
 //        onConnected:{
 //            stateIcon.color = "limegreen"
 //            stateText.text = "Connected"
 //            connectSwitch.checked = true
 //        }
-//        onDisconnected:{
+//        onDisConnected:{
 //            stateIcon.color = defaultIconColor
 //            stateText.text = "UnConnected"
 //            connectSwitch.checked = false
@@ -86,7 +91,7 @@ Item {
             height: parent.height
             TextField{
                 id: uuidText
-                width: parent.width - scanButton.width - uuidButton.width - 8
+                width: parent.width - openSwitch.width - uuidButton.width - 8
                 anchors.leftMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
 //                placeholderText: BluetoothCom.uuid
@@ -95,7 +100,7 @@ Item {
             Button{
                 id: uuidButton
                 height: uuidText.height
-                anchors.right: scanButton.left
+                anchors.right: openSwitch.left
                 anchors.rightMargin: 5
                 highlighted: true
                 text: qsTr("SetUUid")
@@ -107,15 +112,18 @@ Item {
                     }
                 }
             }
-
-            Button{
-                id: scanButton
+            Switch{
+                id: openSwitch
                 height: uuidText.height
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                highlighted: true
-                text: qsTr("Scan")
-                onClicked: scanListDevice.openPopup()
+                onCheckedChanged: {
+                    if(checked){
+                        BluetoothCom.openBluetooth()
+                    }else{
+                        BluetoothCom.closeBluetooth()
+                    }
+                }
             }
         }
     }
@@ -159,21 +167,21 @@ Item {
                 Text {
                     id: stateText
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: openSwitch.left
+                    anchors.right: scanButton.left
                     anchors.rightMargin: 10
                     text: qsTr("UnConeted")
                 }
 
-                Switch{
-                    id: openSwitch
+                Button{
+                    id: scanButton
                     anchors.right: parent.right
                     height: uuidText.height
-                    onCheckedChanged: {
-                        if(checked){
-                            BluetoothCom.openBluetooth()
-                        }else{
-                            BluetoothCom.closeBluetooth()
-                        }
+                    highlighted: true
+                    text: qsTr("Scan")
+                    onClicked: {
+//                        scanListDevice.delAllItem()
+                        BluetoothCom.searchDevice()
+                        scanListDevice.openPopup()
                     }
                 }
             }

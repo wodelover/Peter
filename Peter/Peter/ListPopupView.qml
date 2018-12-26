@@ -33,15 +33,13 @@ Item {
     property int currentValue: 0 //当前选中项索引
     property int duration: 5    //每一项之间的间隔
 
-    function addItem(ip,port,time,data){
-        settingModel.append({recvMessageIP:ip,recvMessagePort:port,
-                            recvMessageTime:time,recvMessageData:data})
+    function addItem(name,addr){
+        settingModel.append({devNameText:name,devAddressText:addr})
         settingListView.currentIndex = settingModel.count - 1
     }
 
-    function insertItem(ip,port,time,data){
-        settingModel.insert(0,{recvMessageIP:ip,recvMessagePort:port,
-                            recvMessageTime:time,recvMessageData:data})
+    function insertItem(name,addr){
+        settingModel.insert(0,{devNameText:name,devAddressText:addr})
         settingListView.currentIndex = 0
     }
 
@@ -80,10 +78,18 @@ Item {
 
     ListModel{//模型数据
         id: settingModel
-//        ListElement{
-//            devNameText: qsTr("1111111")
-//            devAddressText: qsTr("1234")
-//        }
+        ListElement{
+            devNameText: qsTr("1111111")
+            devAddressText: qsTr("1234")
+        }
+        ListElement{
+            devNameText: qsTr("1111111")
+            devAddressText: qsTr("aaa")
+        }
+        ListElement{
+            devNameText: qsTr("1111111")
+            devAddressText: qsTr("dddd")
+        }
     }
 
     Component{//单个子项组件
@@ -126,7 +132,8 @@ Item {
                     delegateItem.ListView.view.currentIndex = index
                 }
                 onDoubleClicked: {
-                    console.log("double cliecked")
+                    BluetoothCom.connectDevice(settingListView.model.get(delegateItem.ListView.view.currentIndex).devAddressText)
+                    closePopup()
                 }
             }
         }

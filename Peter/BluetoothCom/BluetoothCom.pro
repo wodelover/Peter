@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        BluetoothCom.cpp
+        BluetoothCom.cpp \
+    MyBlueTooth.cpp
 
 HEADERS += \
         BluetoothCom.h \
-        bluetoothcom_global.h 
+        bluetoothcom_global.h \ 
+    MyBlueTooth.h
 
 unix {
     target.path = /usr/lib

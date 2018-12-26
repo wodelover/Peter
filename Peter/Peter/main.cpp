@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <initfile.h>
 #include <QIcon>
+#include <MyBlueTooth.h>
 
 int main(int argc, char *argv[])
 {
@@ -12,25 +13,23 @@ int main(int argc, char *argv[])
 
     app.setWindowIcon(QIcon(QLatin1String(":/Image/Image/system.ico")));
 
+    // TcpClientCom
+    TcpClientCom tcpClientCom;
+    // TcpServerCom
+    TcpServerCom tcpServerCom;
+    // HttpCom
+    HttpCom httpClientCom;
+    // BluetoothCom
+    MyBlueTooth blueToothCom;
+
     QQmlApplicationEngine engine;
 
     qRegisterMetaType<QAbstractSocket::SocketState>("QAbstractSocket::SocketState");
 
-    // TcpClientCom
-    TcpClientCom tcpClientCom;
-    engine.rootContext()->setContextProperty("TcpClientCom", &tcpClientCom);
-
-    // TcpServerCom
-    TcpServerCom tcpServerCom;
-    engine.rootContext()->setContextProperty("TcpServerCom", &tcpServerCom);
-
-    // HttpCom
-    HttpCom httpClientCom;
-    engine.rootContext()->setContextProperty("HttpClientCom", &httpClientCom);
-
-    // HttpCom
-    BluetoothCom blueToothCom;
-    engine.rootContext()->setContextProperty("BluetoothCom", &blueToothCom);
+    engine.rootContext()->setContextProperty("TcpClientCom",&tcpClientCom);
+    engine.rootContext()->setContextProperty("TcpServerCom",&tcpServerCom);
+    engine.rootContext()->setContextProperty("HttpClientCom",&httpClientCom);
+    engine.rootContext()->setContextProperty("BluetoothCom",&blueToothCom);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

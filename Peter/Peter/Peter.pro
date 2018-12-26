@@ -13,7 +13,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+#    BluetoothCom.cpp
+    MyBlueTooth.cpp
 
 RESOURCES += qml.qrc \
     font.qrc \
@@ -31,7 +33,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    initfile.h
+    initfile.h \
+#    BluetoothCom.h
+    MyBlueTooth.h
 
 #配置win系统显示图标
 RC_ICONS = Image/system.ico
@@ -63,8 +67,8 @@ INCLUDEPATH += $$PWD/../HttpCom
 DEPENDPATH += $$PWD/../HttpCom
 
 #Bluetooth
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/release/ -lBluetoothCom
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/debug/ -lBluetoothCom
-else:unix: LIBS += -L$$OUT_PWD/../BluetoothCom/ -lBluetoothCom
-INCLUDEPATH += $$PWD/../BluetoothCom
-DEPENDPATH += $$PWD/../BluetoothCom
+#win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/release/ -lBluetoothCom
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/debug/ -lBluetoothCom
+#else:unix: LIBS += -L$$OUT_PWD/../BluetoothCom/ -lBluetoothCom
+#INCLUDEPATH += $$PWD/../BluetoothCom
+#DEPENDPATH += $$PWD/../BluetoothCom
