@@ -14,11 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    BluetoothCom.cpp
 
 HEADERS += \
     initfile.h \
-    BluetoothCom.h
 
 
 RESOURCES += qml.qrc \
@@ -38,7 +36,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 #配置win系统显示图标
 RC_ICONS = Image/system.ico
-#配置Android系统
+#配置Android系统，系统启动自定义入口文件：android:name="an.qt.QtFullscreenActivityAPP.QtFullscreenActivity"
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/AndroidSource
 
 DISTFILES += \
@@ -66,8 +64,8 @@ INCLUDEPATH += $$PWD/../HttpCom
 DEPENDPATH += $$PWD/../HttpCom
 
 #Bluetooth
-#win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/release/ -lBluetoothCom
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/debug/ -lBluetoothCom
-#else:unix: LIBS += -L$$OUT_PWD/../BluetoothCom/ -lBluetoothCom
-#INCLUDEPATH += $$PWD/../BluetoothCom
-#DEPENDPATH += $$PWD/../BluetoothCom
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/release/ -lBluetoothCom
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../BluetoothCom/debug/ -lBluetoothCom
+else:unix: LIBS += -L$$OUT_PWD/../BluetoothCom/ -lBluetoothCom
+INCLUDEPATH += $$PWD/../BluetoothCom
+DEPENDPATH += $$PWD/../BluetoothCom

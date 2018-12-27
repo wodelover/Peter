@@ -1,15 +1,7 @@
 <?xml version="1.0"?>
 <manifest package="org.qtproject.example.Peter" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="1" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" 
-				 android:name="org.qtproject.qt5.android.bindings.QtApplication" 
-				 android:label="Peter" 
-				 android:icon="@drawable/icon">
-				 
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" 
-                              android:name="an.qt.QtFullscreenActivityAPP.QtFullscreenActivity"
-				  android:label="Peter" 
-				  android:screenOrientation="unspecified" 
-				  android:launchMode="singleTop">
+    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="Peter" android:icon="@drawable/icon">
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="an.qt.QtFullscreenActivityAPP.QtFullscreenActivity" android:label="Peter" android:screenOrientation="unspecified" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -19,8 +11,6 @@
             <!-- meta-data android:name="android.app.arguments" android:value="arg1 arg2 arg3"/ -->
             <!-- Application arguments -->
 
-			<meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splash"/>
-			
             <meta-data android:name="android.app.lib_name" android:value="Peter"/>
             <meta-data android:name="android.app.qt_sources_resource_id" android:resource="@array/qt_sources"/>
             <meta-data android:name="android.app.repository" android:value="default"/>
@@ -34,8 +24,8 @@
             <meta-data android:name="android.app.use_local_qt_libs" android:value="1"/>
             <meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/>
             <meta-data android:name="android.app.load_local_libs" android:value="plugins/platforms/android/libqtforandroid.so:plugins/bearer/libqandroidbearer.so:lib/libQt5QuickParticles.so"/>
-            <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid.jar:jar/QtAndroidBearer.jar"/>
-            <meta-data android:name="android.app.static_init_classes" android:value=""/>
+            <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid.jar:jar/QtAndroidBearer.jar:jar/QtAndroidExtras.jar:jar/QtAndroidBluetooth.jar"/>
+            <meta-data android:name="android.app.static_init_classes" android:value="org.qtproject.qt5.android.bluetooth.QtBluetoothBroadcastReceiver"/>
             <!-- Used to specify custom system library path to run with local system libs -->
             <!-- <meta-data android:name="android.app.system_libs_prefix" android:value="/system/lib/"/> -->
             <!--  Messages maps -->
@@ -84,6 +74,9 @@
         <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
 
     <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.

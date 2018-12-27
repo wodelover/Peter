@@ -101,12 +101,12 @@ ApplicationWindow {
         y: tittle.height
         currentIndex: tabBar.currentIndex
 
-//        TcpClientPage{
-//        }
-//        TcpServerPage{
-//        }
-//        HttpClientPage{
-//        }
+        TcpClientPage{
+        }
+        TcpServerPage{
+        }
+        HttpClientPage{
+        }
         BlueToothPage{
         }
     }
