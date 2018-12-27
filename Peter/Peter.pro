@@ -5,4 +5,5 @@ SUBDIRS += \
     TcpClientCom \
     TcpServerCom \
     HttpCom \
-    BluetoothCom
+    BluetoothCom \
+    ProcessIni
