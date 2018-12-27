@@ -26,7 +26,8 @@
 
 /**
  * @ClassName: BluetoothCom
- * @Description: 蓝牙通信模块,在安卓平台上，不能自定义java入口类，即Oncreate()方法
+ * @Description: 蓝牙通信模块,如果配置后不能运行,需要将AndroidManifest.xml
+ * 文件删除重新配置
  * 否则将会导致蓝牙模块不可用
  * @Autor: zhanghao kinderzhang@foxmail.com
  * @date: 2018-12-21 09:01:12

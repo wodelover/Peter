@@ -35,12 +35,12 @@ Item {
 
     function addItem(name,addr){
         settingModel.append({devNameText:name,devAddressText:addr})
-        settingListView.currentIndex = settingModel.count - 1
+//        settingListView.currentIndex = settingModel.count - 1
     }
 
     function insertItem(name,addr){
         settingModel.insert(0,{devNameText:name,devAddressText:addr})
-        settingListView.currentIndex = 0
+//        settingListView.currentIndex = 0
     }
 
     function delAllItem(){
@@ -78,18 +78,6 @@ Item {
 
     ListModel{//模型数据
         id: settingModel
-        ListElement{
-            devNameText: qsTr("1111111")
-            devAddressText: qsTr("1234")
-        }
-        ListElement{
-            devNameText: qsTr("1111111")
-            devAddressText: qsTr("aaa")
-        }
-        ListElement{
-            devNameText: qsTr("1111111")
-            devAddressText: qsTr("dddd")
-        }
     }
 
     Component{//单个子项组件

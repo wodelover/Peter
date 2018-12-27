@@ -10,9 +10,6 @@ BluetoothCom::BluetoothCom(QObject *parent) : QObject(parent)
     connect(m_discoveryAgent,SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
             this,SLOT(newDeviceDiscovered(QBluetoothDeviceInfo)));
 
-    // Start a discovery
-    m_discoveryAgent->start();
-
     connect(m_socket,SIGNAL(connected()),
             this,SIGNAL(connected()));
 
@@ -21,8 +18,6 @@ BluetoothCom::BluetoothCom(QObject *parent) : QObject(parent)
 
     connect(m_socket,SIGNAL(readyRead()),
             this,SLOT(readDataBuf()));
-
-    m_discoveryAgent->start();
 }
 
 BluetoothCom::~BluetoothCom()

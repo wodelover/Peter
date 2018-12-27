@@ -29,9 +29,9 @@ Item {
 
     Connections{
         target: BluetoothCom
-//        onHasNewDeviceFounded:{
-//            scanListDevice.insertItem(name,addr)
-//        }
+        onHasNewDeviceFounded:{
+            scanListDevice.insertItem(name,addr)
+        }
 
         onHasDataComeFromRemoteDevice:{
             newData = data
@@ -40,16 +40,16 @@ Item {
             rxCnt += newData.length
         }
 
-//        onConnected:{
-//            stateIcon.color = "limegreen"
-//            stateText.text = "Connected"
-//            connectSwitch.checked = true
-//        }
-//        onDisConnected:{
-//            stateIcon.color = defaultIconColor
-//            stateText.text = "UnConnected"
-//            connectSwitch.checked = false
-//        }
+        onConnected:{
+            stateIcon.color = "limegreen"
+            stateText.text = "Connected"
+            connectSwitch.checked = true
+        }
+        onDisConnected:{
+            stateIcon.color = defaultIconColor
+            stateText.text = "UnConnected"
+            connectSwitch.checked = false
+        }
     }
 
     function sendDataToRemoteDevice(){
@@ -179,7 +179,7 @@ Item {
                     highlighted: true
                     text: qsTr("Scan")
                     onClicked: {
-//                        scanListDevice.delAllItem()
+                        scanListDevice.delAllItem()
                         BluetoothCom.searchDevice()
                         scanListDevice.openPopup()
                     }
