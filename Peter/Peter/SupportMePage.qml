@@ -37,26 +37,19 @@ Item {
         id: popue
         width: parent.width
         height: parent.height
-        anchors.centerIn: parent
         modal: true
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         ScrollView{
             anchors.fill: parent
             clip: true
-            ScrollView {
-                id: settingScrollView
-                anchors.fill: parent
-                clip: true
-                ListView {
-                    id: settingListView
-                    anchors.fill: parent
-                    model: settingModel
-                    delegate: settingDelegate
-                    highlightFollowsCurrentItem: true
-                    highlightMoveDuration: 80 // 设置移动选中项的过渡时间
-                    highlightRangeMode: ListView.NoHighlightRange//设置内容自动滚动的方式
-                }
+            ListView {
+                id: settingListView
+                model: settingModel
+                delegate: settingDelegate
+                highlightFollowsCurrentItem: true
+                highlightMoveDuration: 80 // 设置移动选中项的过渡时间
+                highlightRangeMode: ListView.NoHighlightRange//设置内容自动滚动的方式
             }
         }
     }
@@ -71,8 +64,7 @@ Item {
     Component{//单个子项组件
         id: settingDelegate
         Item{
-            id: delegateItem
-            width: mainwindow.width - popue.width
+            width: mainwindow.width
             height: image.height
             Image {
                 id: image
@@ -81,13 +73,8 @@ Item {
             Component.onCompleted: {
                 var oldwidth = image.width
                 var oldheight = image.height
-//                console.log(delegateItem.width)
-                image.width = delegateItem.width
-                image.height = delegateItem.width * oldheight / oldwidth
-//                console.log(oldwidth)
-//                console.log(oldheight)
-//                console.log(image.width)
-//                console.log(image.height)
+                image.width = (mainwindow.width - popue.width * 3)
+                image.height = image.width * oldheight / oldwidth
             }
         }
     }

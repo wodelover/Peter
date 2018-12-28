@@ -3,7 +3,6 @@
 BluetoothCom::BluetoothCom(QObject *parent) : QObject(parent)
 {
     m_localDevice = new QBluetoothLocalDevice(this);
-    m_localDevice->setHostMode(QBluetoothLocalDevice::HostDiscoverable);
     m_discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
     m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
@@ -17,7 +16,10 @@ BluetoothCom::BluetoothCom(QObject *parent) : QObject(parent)
             this,SIGNAL(disConnected()));
 
     connect(m_socket,SIGNAL(readyRead()),
-            this,SLOT(readDataBuf()));
+            this,SIGNAL(hasDataComeFromRemoteDevice()));
+
+    connect(m_socket,SIGNAL(stateChanged(QBluetoothSocket::SocketState)),
+            this,SIGNAL(stateChanged(QBluetoothSocket::SocketState)));
 }
 
 BluetoothCom::~BluetoothCom()
@@ -50,22 +52,9 @@ void BluetoothCom::setProtocol(int protocol)
     }
 }
 
-int BluetoothCom::blueToothStatus()
-{
-    setBlueToothStatus(m_localDevice->hostMode());
-    return m_blueToothStatus;
-}
-
-void BluetoothCom::setBlueToothStatus(int status)
-{
-    if(status!=m_blueToothStatus){
-        m_blueToothStatus = status;
-        emit blueToothStatusChanged(m_blueToothStatus);
-    }
-}
-
 void BluetoothCom::openBluetooth()
 {
+    m_localDevice->setHostMode(QBluetoothLocalDevice::HostDiscoverable);
     m_localDevice->powerOn();
 }
 
@@ -85,6 +74,29 @@ void BluetoothCom::searchDevice()
     m_discoveryAgent->start();
 }
 
+QMap<QString,QString> BluetoothCom::getAvailableDevices()
+{
+    QList<QBluetoothHostInfo> devs = m_localDevice->allDevices();
+    QMap<QString,QString> info;
+
+    for(int i=0; i<devs.size();i++){
+        info.insert(devs[i].name(),devs[i].address().toString());
+    }
+    return info;
+}
+
+QStringList BluetoothCom::getAvailableDevicesList()
+{
+    QList<QBluetoothHostInfo> devs = m_localDevice->allDevices();
+    QStringList info;
+
+    for(int i=0; i<devs.size();i++){
+        info.append(devs[i].name() + " " + devs[i].address().toString());
+    }
+    info.append("name address");
+    return info;
+}
+
 void BluetoothCom::connectDevice(QString addres)
 {
     QBluetoothAddress address(addres);
@@ -96,16 +108,17 @@ void BluetoothCom::disConnectDevice()
     m_socket->disconnectFromService();
 }
 
-long long BluetoothCom::sendDataToRemoteDevice(QByteArray senddata,long long size)
+long long BluetoothCom::sendDataToRemoteDevice(QByteArray senddata)
 {
-    if(0 ==size){
-        return 0;
-    }
-    else if(size){
-        return m_socket->write(senddata,size);
-    }else{
-       return m_socket->write(senddata);
-    }
+    return m_socket->write(senddata);
+}
+
+QByteArray BluetoothCom::getDataFromBuffer(long long size)
+{
+    if(size)
+        return m_socket->read(size);
+    else
+        return m_socket->readAll();
 }
 
 void BluetoothCom::newDeviceDiscovered(QBluetoothDeviceInfo device)
@@ -113,7 +126,3 @@ void BluetoothCom::newDeviceDiscovered(QBluetoothDeviceInfo device)
     emit hasNewDeviceFounded(device.name(),device.address().toString());
 }
 
-void BluetoothCom::readDataBuf()
-{
-    emit hasDataComeFromRemoteDevice(m_socket->readAll());
-}

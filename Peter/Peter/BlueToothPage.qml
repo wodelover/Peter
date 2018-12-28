@@ -26,30 +26,48 @@ Item {
     property int rxCnt: 0
     property int txCnt: 0
     property string newData: ""
+    property var devices: []
 
     Connections{
         target: BluetoothCom
+
         onHasNewDeviceFounded:{
             scanListDevice.insertItem(name,addr)
         }
 
         onHasDataComeFromRemoteDevice:{
-            newData = data
+            newData = BluetoothCom.getDataFromBuffer()
             var time = new Date()
             recvTextArea.insertItem("","",time.toLocaleTimeString() ,newData)
             rxCnt += newData.length
         }
 
         onConnected:{
+            stateTimer.stop()
             stateIcon.color = "limegreen"
             stateText.text = "Connected"
-            connectSwitch.checked = true
         }
         onDisConnected:{
+            stateTimer.stop()
             stateIcon.color = defaultIconColor
             stateText.text = "UnConnected"
-            connectSwitch.checked = false
         }
+
+        onStateChanged:{
+            if(socketState == 2){
+                stateText.text = "Connecting"
+                stateTimer.start()
+            }else if(socketState == 0){
+                stateTimer.stop()
+                stateIcon.color = defaultIconColor
+                stateText.text = "UnConnected"
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        // 暂时无法做到对蓝牙当前的状态进行获取，后续升级改进
+        BluetoothCom.closeBluetooth()
     }
 
     function sendDataToRemoteDevice(){
@@ -59,7 +77,7 @@ Item {
         }
         var len  = senddata.length
         if(len){
-            BluetoothCom.sendDataToRemoteDevice(senddata)
+            len = BluetoothCom.sendDataToRemoteDevice(senddata)
             txCnt += len
         }
     }
@@ -144,21 +162,25 @@ Item {
                 width: parent.width
                 height: uuidText.height
 
-                ComboBox{
-                    height: uuidText.height
-                    width: parent.width - stateIcon.width - stateText.width - openSwitch.width - 30
-                    model: ["L2capProtocol","RfcommProtocol"]
-                    currentIndex: 1
-                    onCurrentIndexChanged: {
-
+                Timer{
+                    id: stateTimer
+                    running: false
+                    interval: 300
+                    repeat: true
+                    property bool cnn: false
+                    onTriggered: {
+                        if(cnn){
+                            stateIcon.color = defaultIconColor
+                        }else{
+                            stateIcon.color = "limegreen"
+                        }
+                        cnn = !cnn
                     }
                 }
 
                 Text {
                     id: stateIcon
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: stateText.left
-                    anchors.rightMargin: 10
                     text: qsTr("\uf1e6")
                     color: defaultIconColor
                     font.family: defaultIconFamily
@@ -167,23 +189,36 @@ Item {
                 Text {
                     id: stateText
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: scanButton.left
-                    anchors.rightMargin: 10
+                    anchors.left: stateIcon.right
+                    anchors.leftMargin: 10
                     text: qsTr("UnConeted")
                 }
 
                 Button{
-                    id: scanButton
-                    anchors.right: parent.right
-                    height: uuidText.height
+                    id: disconectButton
+                    anchors.right: enterNextColum.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: 35
                     highlighted: true
-                    text: qsTr("Scan")
+                    text: qsTr("\uf127")
+                    font.family: defaultIconFamily
                     onClicked: {
-                        scanListDevice.delAllItem()
-                        BluetoothCom.searchDevice()
-                        scanListDevice.openPopup()
+                        BluetoothCom.disConnectDevice()
                     }
                 }
+
+                CheckBox{
+                    id: enterNextColum
+                    anchors.right: enternextTag.left
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Text {
+                    id: enternextTag
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("回车换行")
+                }
+
             }
 
             Item {
@@ -197,20 +232,35 @@ Item {
                 }
                 Text {
                     id: tX
-                    anchors.horizontalCenter:  parent.horizontalCenter
-                    anchors.horizontalCenterOffset: -width / 2
+                    anchors.right: resetButton.left
+                    anchors.rightMargin: 10
                     text: qsTr("Tx: ") + txCnt
                 }
                 Button{
-                    x: parent.width - width
+                    id: resetButton
                     height: 35
+                    anchors.right: scanButton.left
+                    anchors.rightMargin: 10
                     anchors.verticalCenter: parent.verticalCenter
                     highlighted: true
-                    text:  qsTr("Reset")
+                    text: qsTr("Reset")
                     onClicked: {
                         rxCnt = 0
                         txCnt = 0
                         recvTextArea.delAllItem()
+                    }
+                }
+                Button{
+                    id: scanButton
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: 35
+                    highlighted: true
+                    text: qsTr("Scan")
+                    onClicked: {
+                        scanListDevice.delAllItem()
+                        BluetoothCom.searchDevice()
+                        scanListDevice.openPopup()
                     }
                 }
             }

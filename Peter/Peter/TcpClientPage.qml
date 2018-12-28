@@ -53,7 +53,7 @@ Item {
         }
         var len  = senddata.length
         if(len){
-            TcpClientCom.sendDataToServer(senddata)
+            len = TcpClientCom.sendDataToServer(senddata)
             txCnt += len
         }
     }

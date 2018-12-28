@@ -23,6 +23,8 @@
 #include <QObject>
 #include <QByteArray>
 #include <QVariant>
+#include <QMap>
+#include <QList>
 
 /**
  * @ClassName: BluetoothCom
@@ -39,21 +41,15 @@ class BLUETOOTHCOMSHARED_EXPORT BluetoothCom : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged)
+
+    // 暂时未实现此功能
     Q_PROPERTY(int protocol READ protocol WRITE setProtocol NOTIFY protocolChanged)
-    Q_PROPERTY(int blueToothStatus READ blueToothStatus WRITE setBlueToothStatus NOTIFY blueToothStatusChanged)
+
 public:
     Q_ENUMS(ComProtocol)
     enum ComProtocol{
         L2capProtocol = 1,
         RfcommProtocol = 2
-    };
-    Q_ENUMS(BluetoothStatus)
-    enum BluetoothStatus{
-        PoweredOff,
-        Connectable,
-        Discoverable,
-        DiscoverableLimitedInquiry,
-        UnKnownStatus
     };
 
     explicit BluetoothCom(QObject *parent = nullptr);
@@ -95,10 +91,6 @@ public:
     **/
     Q_INVOKABLE void setProtocol(int protocol = RfcommProtocol);
 
-    Q_INVOKABLE int blueToothStatus();
-
-    Q_INVOKABLE void setBlueToothStatus(int status);
-
     /**
      * @MethodName: openBluetooth
      * @Description: 打开蓝牙
@@ -136,6 +128,17 @@ public:
     Q_INVOKABLE void searchDevice();
 
     /**
+     * @MethodName: getAvailableDevices
+     * @Description:  获取当前系统可用的设备[名字,地址]
+     * @Autor: ZhangHao kinderzhang@foxmail.com
+     * @date: 2018-12-28 09:24:14
+     * @Version: 1.0.0
+     * @return: [QMap<QString,QString>] [名字,地址]
+    **/
+    Q_INVOKABLE QMap<QString,QString> getAvailableDevices();
+    Q_INVOKABLE QStringList getAvailableDevicesList();
+
+    /**
      * @MethodName: connectDevice
      * @Description: 通过蓝牙地址连接蓝牙设备
      * @Autor: ZhangHao kinderzhang@foxmail.com
@@ -160,23 +163,32 @@ public:
      * @Autor: ZhangHao kinderzhang@foxmail.com
      * @date: 2018-12-21 13:32:02
      * @version: 1.0.0
-     * @param: [QByteArray] senddata 待发送的数据
-     * @param: [long long] size 需要发送的大小,默认全部发送
+     * @param: [QByteArray] senddata 待发送的数据=
     **/
-    Q_INVOKABLE long long sendDataToRemoteDevice(QByteArray senddata,long long size = -1);
+    Q_INVOKABLE long long sendDataToRemoteDevice(QByteArray senddata);
+
+    /**
+     * @MethodName: getDataFromBuffer
+     * @Description: 从缓冲区获取数据,默认全部读取数据
+     * @Autor: ZhangHao kinderzhang@foxmail.com
+     * @date: 2018-12-10 14:09:17
+     * @Version: 1.0.0
+     * @Parma: [long long] size 获取数据大小
+    **/
+    Q_INVOKABLE QByteArray getDataFromBuffer(long long size = 0);
+
 
 private slots:
     void newDeviceDiscovered(QBluetoothDeviceInfo device);//发现设备处理函数
-    void readDataBuf();//读取发送过来的数据
 
 signals:
-    void hasDataComeFromRemoteDevice(QByteArray data);
+    void hasDataComeFromRemoteDevice();
     void hasNewDeviceFounded(QString name,QString addr);
     void connected();
     void disConnected();
     void uuidChanged(QString uuid);
     void protocolChanged(int protocol);
-    void blueToothStatusChanged(int status);
+    void stateChanged(QBluetoothSocket::SocketState socketState);
 
 private:
     QBluetoothDeviceDiscoveryAgent *m_discoveryAgent;//用于发现周围设备
@@ -185,7 +197,6 @@ private:
     //默认使用串口通信UUID，如需使用其他模式，需要指定对应的UUID值
     QString m_uuid = "00001101-0000-1000-8000-00805F9B34FB";
     ComProtocol m_protocol = RfcommProtocol;
-    int m_blueToothStatus = -1;
 };
 
 #endif // BLUETOOTHCOM_H

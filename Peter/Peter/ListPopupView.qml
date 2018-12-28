@@ -35,12 +35,12 @@ Item {
 
     function addItem(name,addr){
         settingModel.append({devNameText:name,devAddressText:addr})
-//        settingListView.currentIndex = settingModel.count - 1
+        //        settingListView.currentIndex = settingModel.count - 1
     }
 
     function insertItem(name,addr){
         settingModel.insert(0,{devNameText:name,devAddressText:addr})
-//        settingListView.currentIndex = 0
+        //        settingListView.currentIndex = 0
     }
 
     function delAllItem(){
@@ -58,20 +58,15 @@ Item {
         ScrollView{
             anchors.fill: parent
             clip: true
-            ScrollView {
-                id: settingScrollView
+            ListView {
+                id: settingListView
                 anchors.fill: parent
-                clip: true
-                ListView {
-                    id: settingListView
-                    anchors.fill: parent
-                    model: settingModel
-                    delegate: settingDelegate
-                    highlight: settingHightLight
-                    highlightFollowsCurrentItem: true
-                    highlightMoveDuration: 80 // 设置移动选中项的过渡时间
-                    highlightRangeMode: ListView.NoHighlightRange//设置内容自动滚动的方式
-                }
+                model: settingModel
+                delegate: settingDelegate
+                highlight: settingHightLight
+                highlightFollowsCurrentItem: true
+                highlightMoveDuration: 80 // 设置移动选中项的过渡时间
+                highlightRangeMode: ListView.NoHighlightRange//设置内容自动滚动的方式
             }
         }
     }
