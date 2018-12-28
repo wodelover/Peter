@@ -107,7 +107,7 @@ ApplicationWindow {
         width: parent.width
         height: parent.height - tittle.height
         y: tittle.height
-        currentIndex: 0//tabBar.currentIndex
+        currentIndex: tabBar.currentIndex
 
         TcpClientPage{
         }
