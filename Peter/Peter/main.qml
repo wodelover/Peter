@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.3
 
 ApplicationWindow {
     id: mainwindow
@@ -44,52 +45,59 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
-    Rectangle{
+    Pane{
         id: tittle
-        color: defaultIconColor
-        width: parent.width
+        width: mainwindow.width
         height: tabBar.height
-        Button {
-            flat: true
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.height * 0.8
+        contentWidth: mainwindow.width
+        contentHeight: tabBar.height
+        padding: 0
+        Material.elevation: 3
+        Rectangle{
+            anchors.fill: parent
+            color: defaultIconColor
+            Button {
+                flat: true
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.height * 0.8
+                Text {
+                    anchors.centerIn: parent
+                    font.family: defaultIconFamily
+                    text: "\uf02d"
+                    color: "white"
+                    font.pixelSize: parent.height * 0.8
+                }
+                onClicked: {
+                }
+            }
+
             Text {
-                anchors.centerIn: parent
-                font.family: defaultIconFamily
-                text: "\uf02d"
+                id: pageTittle
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: tittleName[swipeView.currentIndex]
+                font.pointSize: parent.height / 2
                 color: "white"
-                font.pixelSize: parent.height * 0.8
-            }
-            onClicked: {
-            }
-        }
-
-        Text {
-            id: pageTittle
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: tittleName[swipeView.currentIndex]
-            font.pointSize: parent.height / 2
-            color: "white"
-            font.bold: true
-        }
-
-        Button {
-            anchors.right: parent.right
-            width: parent.height * 0.8
-            flat: true
-            anchors.verticalCenter: parent.verticalCenter
-            Text {
-                anchors.centerIn: parent
-                font.family: defaultIconFamily
-                text: "\uf029"
-                color: "white"
-                font.pixelSize: parent.height * 0.8
+                font.bold: true
             }
 
-            onClicked: {
-                supportme.openPopup()
+            Button {
+                anchors.right: parent.right
+                width: parent.height * 0.8
+                flat: true
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    anchors.centerIn: parent
+                    font.family: defaultIconFamily
+                    text: "\uf029"
+                    color: "white"
+                    font.pixelSize: parent.height * 0.8
+                }
+
+                onClicked: {
+                    supportme.openPopup()
+                }
             }
         }
     }
@@ -99,7 +107,7 @@ ApplicationWindow {
         width: parent.width
         height: parent.height - tittle.height
         y: tittle.height
-        currentIndex: tabBar.currentIndex
+        currentIndex: 0//tabBar.currentIndex
 
         TcpClientPage{
         }
